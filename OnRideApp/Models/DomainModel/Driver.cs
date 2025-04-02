@@ -10,6 +10,6 @@
         public double Rating { get; set; }
         public int CabId { get; set; }  // foreign key reference to Cab
         public Cab Cab { get; set; }
-        public TripBooking TripBooking { get; set; }
+        public ICollection<TripBooking> DriverTripBookingList { get; set; }
     }
 }

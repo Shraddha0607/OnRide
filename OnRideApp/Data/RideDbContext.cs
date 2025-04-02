@@ -15,6 +15,7 @@ namespace OnRideApp.Data
         public DbSet<TripBooking> TripBookings { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
     }
 }

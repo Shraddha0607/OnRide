@@ -6,5 +6,6 @@ namespace OnRideApp.Repositories
     {
         Task<Customer> AddAsync(Customer customer);
         List<Customer> GetAllAsync();
+        
     }
 }

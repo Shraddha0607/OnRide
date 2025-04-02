@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnRideApp.Models.Dtos;
+using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Services;
 
 namespace OnRideApp.Controllers

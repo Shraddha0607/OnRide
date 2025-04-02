@@ -40,7 +40,7 @@
     "Parameters": [
       {
         "Name": "customerRequest",
-        "Type": "OnRideApp.Models.Dtos.CustomerRequest",
+        "Type": "OnRideApp.Models.Dtos.Request.CustomerRequest",
         "IsRequired": true
       }
     ],
@@ -66,7 +66,38 @@
     "Parameters": [
       {
         "Name": "driverRequest",
-        "Type": "OnRideApp.Models.Dtos.DriverRequest",
+        "Type": "OnRideApp.Models.Dtos.Request.DriverRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "OnRideApp.Controllers.ReviewController",
+    "Method": "AddReview",
+    "RelativePath": "api/Review/tripId/{tripId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tripId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "reviewRequest",
+        "Type": "OnRideApp.Models.Dtos.Request.ReviewRequest",
         "IsRequired": true
       }
     ],
@@ -92,7 +123,7 @@
     "Parameters": [
       {
         "Name": "tripBookingRequest",
-        "Type": "OnRideApp.Models.Dtos.TripBookingRequest",
+        "Type": "OnRideApp.Models.Dtos.Request.TripBookingRequest",
         "IsRequired": true
       }
     ],

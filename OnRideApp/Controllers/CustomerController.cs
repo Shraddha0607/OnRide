@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos;
+using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Models.MyEnums;
 using OnRideApp.Services;
 

@@ -1,6 +1,6 @@
 ﻿using OnRideApp.Models.DomainModel;
 
-namespace OnRideApp.Models.Dtos
+namespace OnRideApp.Models.Dtos.Request
 {
     public class DriverRequest
     {

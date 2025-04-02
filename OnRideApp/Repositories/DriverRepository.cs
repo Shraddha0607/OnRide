@@ -14,9 +14,15 @@ namespace OnRideApp.Repositories
 
         public async Task<Driver> AddAsync(Driver driver)
         {
-            await rideDbContext.AddAsync(driver);
-            await rideDbContext.SaveChangesAsync();
+             await rideDbContext.AddAsync(driver);
+             await rideDbContext.SaveChangesAsync();
+
             return driver;
+        }
+
+        public IEnumerable<Driver> GetAll()
+        {
+            return  rideDbContext.Drivers.ToList();
         }
     }
 }

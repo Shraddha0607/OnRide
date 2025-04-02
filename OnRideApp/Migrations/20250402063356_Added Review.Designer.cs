@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnRideApp.Data;
 
@@ -11,9 +12,11 @@ using OnRideApp.Data;
 namespace OnRideApp.Migrations
 {
     [DbContext(typeof(RideDbContext))]
-    partial class RideDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402063356_Added Review")]
+    partial class AddedReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,8 +190,7 @@ namespace OnRideApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TripBookingId")
-                        .IsUnique();
+                    b.HasIndex("TripBookingId");
 
                     b.ToTable("Reviews");
                 });
@@ -260,8 +262,8 @@ namespace OnRideApp.Migrations
             modelBuilder.Entity("OnRideApp.Models.DomainModel.Review", b =>
                 {
                     b.HasOne("OnRideApp.Models.DomainModel.TripBooking", "TripBooking")
-                        .WithOne("Review")
-                        .HasForeignKey("OnRideApp.Models.DomainModel.Review", "TripBookingId")
+                        .WithMany("Reviews")
+                        .HasForeignKey("TripBookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -310,8 +312,7 @@ namespace OnRideApp.Migrations
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.TripBooking", b =>
                 {
-                    b.Navigation("Review")
-                        .IsRequired();
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

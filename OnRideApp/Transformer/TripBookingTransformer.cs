@@ -1,5 +1,6 @@
 ﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos;
+using OnRideApp.Models.Dtos.Request;
+using OnRideApp.Models.Dtos.Response;
 
 namespace OnRideApp.Transformer
 {
@@ -9,10 +10,28 @@ namespace OnRideApp.Transformer
         {
             return new TripBooking
             {
+                BookingId = Guid.NewGuid(),
                 PickUp = request.PickUp,
                 Destination = request.Destination,
-                TripDistancePrKm = request.TripDistancePrKm,
+                TripDistanceInKm = request.TripDistanceInKm,
                 TripStatus = Models.MyEnums.TripStatus.IN_TRANSIT
+            };
+        }
+
+        public static TripBookingResponse TripBookingToTripBookingResponse(TripBooking tripBooking)
+        {
+            return new TripBookingResponse
+            {
+                Id = tripBooking.Id,
+                BookingId = tripBooking.BookingId.ToString(),
+                PickUp = tripBooking.PickUp,
+                Destination = tripBooking.Destination,
+                TripDistanceInKm = tripBooking.TripDistanceInKm,
+                TotalFare = tripBooking.TotalFare,
+                TripStatus = tripBooking.TripStatus,
+                BookedAt = tripBooking.BookedAt,
+                DriverName = tripBooking.Driver.Name,
+                DriverRating = tripBooking.Driver.Rating
             };
         }
     }

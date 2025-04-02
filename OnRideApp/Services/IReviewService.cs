@@ -3,8 +3,8 @@ using OnRideApp.Models.Dtos.Request;
 
 namespace OnRideApp.Services
 {
-    public interface IDriverService
+    public interface IReviewService
     {
-        Task<Driver> AddDriverAsync(DriverRequest driverRequest);
+        Task<string> SubmitReview(int tripId, ReviewRequest reviewRequest);
     }
 }

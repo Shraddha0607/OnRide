@@ -1,4 +1,5 @@
-﻿using OnRideApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OnRideApp.Data;
 using OnRideApp.Models.DomainModel;
 
 namespace OnRideApp.Repositories
@@ -14,7 +15,7 @@ namespace OnRideApp.Repositories
 
         public Cab getRandomAvailableCab()
         {
-            var cab = rideDbContext.Cabs.FirstOrDefault(x => x.IsAvailable == true);
+            var cab = rideDbContext.Cabs.Include(x => x.Driver).AsSplitQuery().FirstOrDefault(x => x.IsAvailable == true);
             return cab;
         }
     }

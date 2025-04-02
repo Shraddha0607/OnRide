@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnRideApp.Data;
 
@@ -11,9 +12,11 @@ using OnRideApp.Data;
 namespace OnRideApp.Migrations
 {
     [DbContext(typeof(RideDbContext))]
-    partial class RideDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402001532_Added tables")]
+    partial class Addedtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,30 +185,24 @@ namespace OnRideApp.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("TripBookingId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TripBookingBookingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TripBookingId")
-                        .IsUnique();
+                    b.HasIndex("TripBookingBookingId");
 
                     b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.TripBooking", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("BookingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("BookedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("BookingId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -230,7 +227,7 @@ namespace OnRideApp.Migrations
                     b.Property<int>("TripStatus")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("BookingId");
 
                     b.HasIndex("CustomerId");
 
@@ -260,8 +257,8 @@ namespace OnRideApp.Migrations
             modelBuilder.Entity("OnRideApp.Models.DomainModel.Review", b =>
                 {
                     b.HasOne("OnRideApp.Models.DomainModel.TripBooking", "TripBooking")
-                        .WithOne("Review")
-                        .HasForeignKey("OnRideApp.Models.DomainModel.Review", "TripBookingId")
+                        .WithMany("Reviews")
+                        .HasForeignKey("TripBookingBookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -310,8 +307,7 @@ namespace OnRideApp.Migrations
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.TripBooking", b =>
                 {
-                    b.Navigation("Review")
-                        .IsRequired();
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

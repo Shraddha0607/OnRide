@@ -153,6 +153,7 @@ D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj
 D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\OnRideApp.csproj.CoreCompileInputs.cache
 D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\OnRideApp.MvcApplicationPartsAssemblyInfo.cs
 D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\OnRideApp.MvcApplicationPartsAssemblyInfo.cache
+D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\OnRideApp.sourcelink.json
 D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\scopedcss\bundle\OnRideApp.styles.css
 D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\staticwebassets.build.json
 D:\Learning After job\dotnet\Asp.net Core web api\OnRide\OnRideApp\OnRideApp\obj\Debug\net8.0\staticwebassets.development.json

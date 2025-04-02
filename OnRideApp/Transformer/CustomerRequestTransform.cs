@@ -1,5 +1,6 @@
 ﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos;
+using OnRideApp.Models.Dtos.Request;
+using OnRideApp.Models.Dtos.Response;
 
 namespace OnRideApp.Transformer
 {
@@ -14,6 +15,15 @@ namespace OnRideApp.Transformer
                 EmailId = customerRequest.EmailId,
                 Address = customerRequest.Address,
                 Gender = customerRequest.Gender
+            };
+        }
+
+        public static CustomerResponse CustomerToCustomerResponse(Customer customer)
+        {
+            return new CustomerResponse
+            {
+                Name = customer.Name,
+                EmailId = customer.EmailId
             };
         }
     }

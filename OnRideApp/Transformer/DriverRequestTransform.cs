@@ -1,5 +1,5 @@
 ﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos;
+using OnRideApp.Models.Dtos.Request;
 
 namespace OnRideApp.Transformer
 {
