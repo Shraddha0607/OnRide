@@ -1,9 +1,8 @@
 ﻿using OnRideApp.Models.DomainModel;
 
-namespace OnRideApp.Services
+namespace OnRideApp.Services;
+
+public interface ICouponService
 {
-    public interface ICouponService
-    {
-        Task<Coupon> AddCouponAsync(string coupon, int discount);
-    }
+    Task<Coupon> AddCouponAsync(string coupon, int discount);
 }

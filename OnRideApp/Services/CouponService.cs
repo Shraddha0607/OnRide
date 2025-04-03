@@ -1,28 +1,27 @@
 ﻿using OnRideApp.Data;
 using OnRideApp.Models.DomainModel;
 
-namespace OnRideApp.Services
+namespace OnRideApp.Services;
+
+public class CouponService : ICouponService
 {
-    public class CouponService : ICouponService
+    private readonly RideDbContext rideDbContext;
+
+    public CouponService(RideDbContext rideDbContext)
     {
-        private readonly RideDbContext rideDbContext;
+        this.rideDbContext = rideDbContext;
+    }
 
-        public CouponService(RideDbContext rideDbContext) 
+    public async Task<Coupon> AddCouponAsync(string coupon, int discount)
+    {
+        Coupon newCoupon = new Coupon
         {
-            this.rideDbContext = rideDbContext;
-        }
+            CouponCode = coupon,
+            percentageDiscount = discount
+        };
 
-        public async Task<Coupon> AddCouponAsync(string coupon, int discount)
-        {
-            Coupon newCoupon = new Coupon
-            {
-                CouponCode = coupon,
-                percentageDiscount = discount
-            };
-
-            await rideDbContext.Coupons.AddAsync(newCoupon);
-            await rideDbContext.SaveChangesAsync();
-            return newCoupon; ;
-        }
+        await rideDbContext.Coupons.AddAsync(newCoupon);
+        await rideDbContext.SaveChangesAsync();
+        return newCoupon; ;
     }
 }

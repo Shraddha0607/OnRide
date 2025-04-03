@@ -1,10 +1,9 @@
 ﻿using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
 
-namespace OnRideApp.Services
+namespace OnRideApp.Services;
+
+public interface IReviewService
 {
-    public interface IReviewService
-    {
-        Task<string> SubmitReview(int tripId, ReviewRequest reviewRequest);
-    }
+    Task<string> SubmitReview(int tripId, ReviewRequest reviewRequest);
 }

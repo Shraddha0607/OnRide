@@ -1,8 +1,7 @@
-﻿namespace OnRideApp.Models.Dtos.Response
+﻿namespace OnRideApp.Models.Dtos.Response;
+
+public class CustomerResponse
 {
-    public class CustomerResponse
-    {
-        public string Name { get; set; }
-        public string EmailId { get; set; }
-    }
+    public string Name { get; set; }
+    public string EmailId { get; set; }
 }

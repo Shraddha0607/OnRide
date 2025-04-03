@@ -2,29 +2,28 @@
 using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Models.Dtos.Response;
 
-namespace OnRideApp.Transformer
-{
-    public class CustomerRequestTransformer
-    {
-        public static Customer CustomerRequestToCustomer(CustomerRequest customerRequest)
-        {
-            return new Customer
-            {
-                Name = customerRequest.Name,
-                Age = customerRequest.Age,
-                EmailId = customerRequest.EmailId,
-                Address = customerRequest.Address,
-                Gender = customerRequest.Gender
-            };
-        }
+namespace OnRideApp.Transformer;
 
-        public static CustomerResponse CustomerToCustomerResponse(Customer customer)
+public class CustomerRequestTransformer
+{
+    public static Customer CustomerRequestToCustomer(CustomerRequest customerRequest)
+    {
+        return new Customer
         {
-            return new CustomerResponse
-            {
-                Name = customer.Name,
-                EmailId = customer.EmailId
-            };
-        }
+            Name = customerRequest.Name,
+            Age = customerRequest.Age,
+            EmailId = customerRequest.EmailId,
+            Address = customerRequest.Address,
+            Gender = customerRequest.Gender
+        };
+    }
+
+    public static CustomerResponse CustomerToCustomerResponse(Customer customer)
+    {
+        return new CustomerResponse
+        {
+            Name = customer.Name,
+            EmailId = customer.EmailId
+        };
     }
 }

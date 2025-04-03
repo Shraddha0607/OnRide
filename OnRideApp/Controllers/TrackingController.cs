@@ -39,9 +39,19 @@ public class TrackingController : ControllerBase
     }
 
     [HttpGet("/tripId/{tripId}")]
-    public async Task<Location> trackCabAsync([FromRoute] int tripId)
+    public async Task<IActionResult> trackCabAsync([FromRoute] int tripId)
     {
-        var location = await trackingService.trackCabAsync(tripId);
-        return location;
+        try
+        {
+            var location = await trackingService.trackCabAsync(tripId);
+            return Ok(location);
+        }
+        catch(Exception ex)
+        {
+            logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
+            logger.LogError(ex.StackTrace);
+            return BadRequest();
+        }
+        
     }
 }

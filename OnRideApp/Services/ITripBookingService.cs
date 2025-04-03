@@ -1,10 +1,9 @@
 ﻿using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
 
-namespace OnRideApp.Services
+namespace OnRideApp.Services;
+
+public interface ITripBookingService
 {
-    public interface ITripBookingService
-    {
-        Task<TripBooking> AddTripBookingAsync(TripBookingRequest tripBookingRequest);
-    }
+    Task<TripBooking> AddTripBookingAsync(TripBookingRequest tripBookingRequest);
 }

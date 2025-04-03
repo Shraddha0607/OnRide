@@ -2,24 +2,38 @@
 using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Services;
 
-namespace OnRideApp.Controllers
+namespace OnRideApp.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class TripBookingController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TripBookingController
+    private readonly ITripBookingService tripBookingService;
+    private readonly ILogger logger;
+
+    public TripBookingController(ITripBookingService tripBookingService,
+        ILogger logger)
     {
-        private readonly ITripBookingService tripBookingService;
+        this.tripBookingService = tripBookingService;
+        this.logger = logger;
+    }
 
-        public TripBookingController(ITripBookingService tripBookingService)
-        {
-            this.tripBookingService = tripBookingService;
-        }
-
-        [HttpPost]
-        public async Task<string> bookCab(TripBookingRequest tripBookingRequest)
+    [HttpPost]
+    public async Task<IActionResult> bookCab(TripBookingRequest tripBookingRequest)
+    {
+        try
         {
             await tripBookingService.AddTripBookingAsync(tripBookingRequest);
-            return "Trip added successfully";
+            return Ok("Trip added successfully");
+        }
+        catch (Exception ex)
+        {
+            {
+                logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
+                logger.LogError(ex.StackTrace);
+                return BadRequest("Error occured while booking cab!");
+            }
+
         }
     }
 }
