@@ -1,32 +1,39 @@
-﻿using OnRideApp.Models.DomainModel;
+﻿using Microsoft.EntityFrameworkCore;
+using OnRideApp.Data;
+using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Models.MyEnums;
-using OnRideApp.Repositories;
 using OnRideApp.Transformer;
 
 namespace OnRideApp.Services
 {
     public class CustomerService : ICustomerService
     {
-        private readonly ICustomerRepository customerRepository;
+        private readonly RideDbContext rideDbContext;
 
-        public CustomerService(ICustomerRepository customerRepository)
+        public CustomerService(RideDbContext rideDbContext)
         {
-            this.customerRepository = customerRepository;
+            this.rideDbContext = rideDbContext;
         }
 
         public async Task<Customer> AddCustomerAsync(CustomerRequest customerRequest)
         {
             Customer customer = CustomerRequestTransformer.CustomerRequestToCustomer(customerRequest);
-            var createdDriver = await customerRepository.AddAsync(customer);
-            return createdDriver;
+            await rideDbContext.Customers.AddAsync(customer);
+            await rideDbContext.SaveChangesAsync();
+            return customer;
         }
 
         public async Task<IEnumerable<Customer>> GetCustomerByGenderAndAgeGreaterThanAsync(Gender gender, int age)
         {
-            var allCustomers = customerRepository.GetAllAsync();
-            var customer = allCustomers.Where(x => x.Gender == gender && x.Age == age);
-            return customer;
+            var allCustomers = await rideDbContext.Customers
+                                        .Where(x => x.Gender == gender && x.Age == age)
+                                        .ToListAsync();
+            if(allCustomers == null)
+            {
+                throw new Exception("No such customer found");
+            }
+            return allCustomers;
         }
     }
 }

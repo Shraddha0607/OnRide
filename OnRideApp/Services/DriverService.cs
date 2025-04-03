@@ -1,33 +1,67 @@
-﻿using OnRideApp.Models.DomainModel;
+﻿using OnRideApp.Data;
+using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Repositories;
 using OnRideApp.Transformer;
 
 namespace OnRideApp.Services
 {
     public class DriverService : IDriverService
     {
-        private readonly IDriverRepository driverRepository;
-        private readonly ICabRepository cabRepository;
+        private readonly RideDbContext rideDbContext;
 
-        public DriverService(IDriverRepository driverRepository,
-                            ICabRepository cabRepository)
+        public DriverService(RideDbContext rideDbContext)
         {
-            this.driverRepository = driverRepository;
-            this.cabRepository = cabRepository;
+            this.rideDbContext = rideDbContext;
         }
 
         public async Task<Driver> AddDriverAsync(DriverRequest driverRequest)
         {
-            Cab cab = DriverRequestTransform.CabRequestToCab(driverRequest.Cab);
+            var transaction = await rideDbContext.Database.BeginTransactionAsync();
+            var transactionSavepoint = "AddDriverData";
+            try
+            {
+                CabSpecification? cabSpecification = await rideDbContext.CabSpecifications.FindAsync(driverRequest.Cab.CabSpecificationId);
+                if (cabSpecification == null)
+                {
+                    throw new Exception("Cab Specification not found");
+                }
 
-            // we do need to save this first
-            //Cab savedCab = await cabRepository.AddAsync(cab);
-            Driver driver = DriverRequestTransform.DriverRequestToDriver(driverRequest);
-            driver.Cab = cab;
+                Cab cab = DriverRequestTransform.CabRequestToCab(driverRequest.Cab);
+                Driver driver = DriverRequestTransform.DriverRequestToDriver(driverRequest);
+
+                CabInSpecification cabInSpecification = new CabInSpecification()
+                {
+                    Cab = cab,
+                    CabSpecification = cabSpecification
+                };
+
+                CabDriver cabDriver = new CabDriver()
+                {
+                    Cab = cab,
+                    Driver = driver
+                };
+
+                await transaction.CreateSavepointAsync(transactionSavepoint);
+                await rideDbContext.Cabs.AddAsync(cab);
+                await rideDbContext.Drivers.AddAsync(driver);
+                await rideDbContext.CabDrivers.AddAsync(cabDriver);
+                await rideDbContext.CabInSpecification.AddAsync(cabInSpecification);
+                await rideDbContext.SaveChangesAsync();
+
+                // if succedde then commt
+                await transaction.CommitAsync();
+                return driver;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackToSavepointAsync(transactionSavepoint);
+                Console.WriteLine(ex);
+            }
+
+            return default;
             
-            var createdDriver = await driverRepository.AddAsync(driver);
-            return driver;
         }
+
+
     }
 }

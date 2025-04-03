@@ -2,30 +2,38 @@
 using OnRideApp.Models.DomainModel;
 using OnRideApp.Services;
 
-namespace OnRideApp.Controllers
+namespace OnRideApp.Controllers;
+
+[Route("/api/[controller]")]
+[ApiController]
+public class CouponController : ControllerBase
 {
-    [Route("/api/[controller]")]
-    [ApiController]
-    public class CouponController : ControllerBase
+    private readonly ICouponService couponService;
+    private readonly ILogger logger;
+
+    public CouponController(ICouponService couponService,
+        ILogger logger)
     {
-        private readonly ICouponService couponService;
+        this.couponService = couponService;
+        this.logger = logger;
+    }
 
-        public CouponController(ICouponService couponService)
-        {
-            this.couponService = couponService;
-        }
-
-        [HttpPost]
-        public async Task<string> CreateCoupon(
-            [FromQuery] string coupon,
-            [FromQuery] int discount)
+    [HttpPost]
+    public async Task<IActionResult> CreateCoupon(
+        [FromQuery] string coupon,
+        [FromQuery] int discount)
+    {
+        try
         {
             var newCoupon = await couponService.AddCouponAsync(coupon, discount);
-            if (newCoupon == null)
-            {
-                // handle error
-            }
-            return "Coupon added successfully";
+            return Ok("Coupon added successfully");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("{} Error :  {}", DateTime.Now, ex.Message);
+            logger.LogError(ex.StackTrace);
+            return BadRequest("Error occured while adding coupon.");
         }
     }
 }
+

@@ -1,16 +1,16 @@
-﻿using OnRideApp.Models.MyEnums;
+﻿using System.ComponentModel.DataAnnotations;
+using OnRideApp.Models.MyEnums;
 
-namespace OnRideApp.Models.DomainModel
+namespace OnRideApp.Models.DomainModel;
+
+public class Customer
 {
-    public class Customer
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public string EmailId { get; set; }
-        public string Address { get; set; }
-        public Gender Gender { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public string EmailId { get; set; }
 
-        public ICollection<TripBooking> CustomerTripBookingList { get; set; }
-    }
+    public string Address { get; set; }
+    public Gender Gender { get; set; }
+
 }

@@ -14,7 +14,8 @@ namespace OnRideApp.Transformer
                 PickUp = request.PickUp,
                 Destination = request.Destination,
                 TripDistanceInKm = request.TripDistanceInKm,
-                TripStatus = Models.MyEnums.TripStatus.IN_TRANSIT
+                TripStatus = Models.MyEnums.TripStatus.IN_TRANSIT,
+                BookedAt = request.BookedAt
             };
         }
 
@@ -29,9 +30,7 @@ namespace OnRideApp.Transformer
                 TripDistanceInKm = tripBooking.TripDistanceInKm,
                 TotalFare = tripBooking.TotalFare,
                 TripStatus = tripBooking.TripStatus,
-                BookedAt = tripBooking.BookedAt,
-                DriverName = tripBooking.Driver.Name,
-                DriverRating = tripBooking.Driver.Rating
+                BookedAt = tripBooking.BookedAt
             };
         }
     }

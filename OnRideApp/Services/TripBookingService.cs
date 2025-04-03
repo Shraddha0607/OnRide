@@ -1,76 +1,81 @@
-﻿using OnRideApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OnRideApp.Data;
 using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Repositories;
 using OnRideApp.Transformer;
 
 namespace OnRideApp.Services
 {
     public class TripBookingService : ITripBookingService
     {
-        private readonly ITripBookingRepository tripBookingRepository;
-        private readonly ICustomerRepository customerRepository;
-        private readonly ICabRepository cabRepository;
-        private readonly IDriverRepository driverRepository;
+        private readonly RideDbContext rideDbContext;
 
-        public TripBookingService(
-            ITripBookingRepository tripBookingRepository,
-            ICustomerRepository customerRepository,
-            ICabRepository cabRepository,
-            IDriverRepository driverRepository)
+        public TripBookingService(RideDbContext rideDbContext)
         {
-            this.tripBookingRepository = tripBookingRepository;
-            this.customerRepository = customerRepository;
-            this.cabRepository = cabRepository;
-            this.driverRepository = driverRepository;
+            this.rideDbContext = rideDbContext;
         }
 
 
         public async Task<TripBooking> AddTripBookingAsync(TripBookingRequest tripBookingRequest)
         {
-            List<Customer> allCustomers =  customerRepository.GetAllAsync();
+            Customer customer = await rideDbContext.Customers.FirstAsync(x => x.EmailId == tripBookingRequest.CustomerEmailId);
+            if (customer == null)
+            {
+                throw new Exception("Customer Id is not valid!");
+            }
 
             try
             {
-                Customer customer = allCustomers.FirstOrDefault(x => x.EmailId == tripBookingRequest.CustomerEmailId);
-                
+
                 TripBooking tripBooking = TripBookingTransformer.TripRequestToTripBooking(tripBookingRequest);
 
-                Cab cab = cabRepository.getRandomAvailableCab();
-                if(cab == null)
+                var availableCab = await rideDbContext.CabInSpecification
+                           .Include(x => x.Cab)
+                           .Include(x => x.CabSpecification)
+                           .Where(x => x.Id == tripBookingRequest.CabSpecificationId)
+                           .Where(x => x.Cab.IsAvailable)
+                           .FirstAsync();
+
+                if (availableCab == null)
                 {
-                    throw new Exception("Sorry no cabs available!");
                 }
 
-                tripBooking.TotalFare = tripBookingRequest.TripDistanceInKm * cab.FarePrKm;
+                Cab? cab = availableCab.Cab;
 
-                // get the driver to whom cab belongs to 
+                tripBooking.TotalFare = tripBookingRequest.TripDistanceInKm * availableCab.CabSpecification.FarePrKm;
 
-                tripBooking.Driver = cab.Driver;
+                await rideDbContext.TripBookings.AddAsync(tripBooking);
+                await rideDbContext.SaveChangesAsync();
 
-                tripBooking.Customer = customer;
-
-                try
+                CustomerBooking customerBooking = new CustomerBooking
                 {
-                    var trip = await tripBookingRepository.AddAsync(tripBooking);
+                    TripBookings = new List<TripBooking>(),
+                    Customer = customer
+                };
+                customerBooking.TripBookings.Add(tripBooking);
 
-                    cab.IsAvailable = false;
+                var cabDriver = await rideDbContext.CabDrivers
+                                    .Include(x => x.Driver)
+                                    .FirstAsync(x => x.Cab == cab);
 
-                    customer.CustomerTripBookingList.Add(tripBooking);
-                }catch(Exception e)
+                DriverBooking driverBooking = new DriverBooking
                 {
-                    Console.WriteLine(e.StackTrace);
-                    Console.WriteLine("issue of review");
-                }
+                    DriverTripBookingList = new List<TripBooking>(),
+                    Driver = cabDriver.Driver
+                };
+                driverBooking.DriverTripBookingList.Add(tripBooking);
 
-                return tripBooking;
+                await rideDbContext.DriverBookings.AddAsync(driverBooking);
+                await rideDbContext.CustomerBookings.AddAsync(customerBooking);
+                await rideDbContext.SaveChangesAsync();
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
             return null;
-            
+
         }
     }
 }

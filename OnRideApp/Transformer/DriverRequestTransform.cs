@@ -20,12 +20,8 @@ namespace OnRideApp.Transformer
         {
             return new Cab
             {
-                CarModel = cabRequest.CarModel,
                 IsAvailable = cabRequest.IsAvailable,
-                CabNumber = cabRequest.CabNumber,
-                CarType = cabRequest.CarType,
-                FarePrKm = cabRequest.FarePrKm,
-                NumberOfSeats = cabRequest.NumberOfSeats
+                Number = cabRequest.CabNumber
             };
         }
     }

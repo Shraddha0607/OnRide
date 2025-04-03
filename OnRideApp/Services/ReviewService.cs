@@ -1,48 +1,51 @@
 ﻿using OnRideApp.Data;
 using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Repositories;
 
 namespace OnRideApp.Services
 {
     public class ReviewService : IReviewService
     {
-        private readonly IReviewRepository reviewRepository;
-        private readonly ITripBookingRepository tripBookingRepository;
-        public ReviewService(IReviewRepository reviewRepository,
-            ITripBookingRepository tripBookingRepository)
+        private readonly RideDbContext rideDbContext;
+        public ReviewService(RideDbContext rideDbContext)
         {
-            this.reviewRepository = reviewRepository;
-            this.tripBookingRepository = tripBookingRepository;
+            this.rideDbContext = rideDbContext;
         }
 
         public async Task<string> SubmitReview(int tripId, ReviewRequest reviewRequest)
         {
-            Console.WriteLine("PRint");
+            var transaction = await rideDbContext.Database.BeginTransactionAsync();
             try
             {
-                var tripBooking = await tripBookingRepository.GetByIdAsync(tripId);
+                var tripBooking = await rideDbContext.TripBookings.FindAsync(tripId);
+                if (tripBooking == null)
+                {
+                    throw new Exception("Invalid Trip Id!");
+                }
 
                 Review review = new Review
                 {
                     Rating = reviewRequest.rating,
-                    Comment = reviewRequest.comment,
-                    TripBooking = tripBooking
+                    Comment = reviewRequest.comment
                 };
 
-                if (tripBooking.Review != null)
+                BookingReview bookingReview = new BookingReview
                 {
-                    await reviewRepository.DeleteAsync(tripBooking.Review);
-                }
-                await reviewRepository.AddAsync(review);
-                tripBooking.Review = review;
-                tripBookingRepository.AddAsync(tripBooking);
+                    TripBooking = tripBooking,
+                    Review = review
+                };
+
+                await transaction.CreateSavepointAsync("transactionSavepoint");
+                await rideDbContext.Reviews.AddAsync(review);
+                await rideDbContext.BookingReviews.AddAsync(bookingReview);
+                await rideDbContext.SaveChangesAsync();
+
+                await transaction.CommitAsync();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                await transaction.RollbackToSavepointAsync("transactionSavepoint");
                 Console.WriteLine(e);
-                
             }
 
             return "Thank you for feedback";

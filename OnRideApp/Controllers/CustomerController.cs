@@ -1,38 +1,63 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnRideApp.Models.DomainModel;
 using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Models.MyEnums;
 using OnRideApp.Services;
 
-namespace OnRideApp.Controllers
+namespace OnRideApp.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CustomerController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CustomerController : ControllerBase
+    private readonly ICustomerService customerService;
+    private readonly ILogger logger;
+    public CustomerController(ICustomerService customerService,
+        ILogger<CustomerController> logger)
     {
-        private readonly ICustomerService customerService;
+        this.customerService = customerService;
+        this.logger = logger;
+    }
 
-        public CustomerController(ICustomerService customerService)
-        {
-            this.customerService = customerService;
-        }
-
-        [HttpPost]
-        public async Task<string> createCustomer(CustomerRequest customerRequest)
+    [HttpPost]
+    public async Task<IActionResult> CreateCustomer(CustomerRequest customerRequest)
+    {
+        try
         {
             var customer = await customerService.AddCustomerAsync(customerRequest);
-            return "Customer created";
+            return Ok("Customer created");
         }
+        catch (Exception ex)
+        {
+            logger.LogError("{} Error :  {}", DateTime.Now, ex.Message);
+            logger.LogError(ex.StackTrace);
 
-        [HttpGet("/gender/{gender}/age/{age}")]
-        public async Task<IEnumerable<Customer>> GetCustomerByGenderAndAgeGreaterThan(
-            [FromRoute] Gender gender,
-            [FromRoute] int age)
+            return BadRequest("Error occured while creating customer");
+        }
+    }
+
+    [HttpGet("/gender/{gender}/age/{age}")]
+    public async Task<IActionResult> GetCustomerByGenderAndAgeGreaterThan(
+        [FromRoute] Gender gender,
+        [FromRoute] int age)
+    {
+        try
         {
             var customers = await customerService.GetCustomerByGenderAndAgeGreaterThanAsync(gender, age);
-            return customers;
+            if (customers == null || !customers.Any())
+            {
+                return NotFound("No related customer found");
+            }
+            return Ok(customers);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("{} Error: {}", DateTime.Now, ex.Message);
+            logger.LogError(ex.StackTrace);
+
+            return BadRequest("Error occured while fetching customer");
         }
 
     }
+
 }

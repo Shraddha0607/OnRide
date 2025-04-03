@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnRideApp.Data;
 
@@ -11,9 +12,11 @@ using OnRideApp.Data;
 namespace OnRideApp.Migrations
 {
     [DbContext(typeof(RideDbContext))]
-    partial class RideDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402174121_Initial Migration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,128 +161,6 @@ namespace OnRideApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CabSpecifications");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CabType = 0,
-                            FarePrKm = 7.5,
-                            Model = "Hyundai i10",
-                            NumberOfSeats = 4
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CabType = 0,
-                            FarePrKm = 8.0,
-                            Model = "Maruti Alto",
-                            NumberOfSeats = 4
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CabType = 1,
-                            FarePrKm = 12.0,
-                            Model = "Honda Civic",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CabType = 1,
-                            FarePrKm = 10.5,
-                            Model = "Toyota Camry",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CabType = 1,
-                            FarePrKm = 13.0,
-                            Model = "BMW 3 Series",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CabType = 2,
-                            FarePrKm = 15.0,
-                            Model = "Toyota Fortuner",
-                            NumberOfSeats = 7
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CabType = 2,
-                            FarePrKm = 16.5,
-                            Model = "Ford Endeavour",
-                            NumberOfSeats = 7
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CabType = 2,
-                            FarePrKm = 14.0,
-                            Model = "Nissan X-Trail",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CabType = 3,
-                            FarePrKm = 11.0,
-                            Model = "Honda HR-V",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CabType = 3,
-                            FarePrKm = 10.5,
-                            Model = "Hyundai Creta",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CabType = 3,
-                            FarePrKm = 12.5,
-                            Model = "Kia Seltos",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CabType = 1,
-                            FarePrKm = 9.5,
-                            Model = "Skoda Octavia",
-                            NumberOfSeats = 5
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CabType = 0,
-                            FarePrKm = 7.0,
-                            Model = "Tata Nano",
-                            NumberOfSeats = 4
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CabType = 2,
-                            FarePrKm = 18.0,
-                            Model = "Land Rover Discovery",
-                            NumberOfSeats = 7
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CabType = 3,
-                            FarePrKm = 11.5,
-                            Model = "Mahindra XUV300",
-                            NumberOfSeats = 5
-                        });
                 });
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.Coupon", b =>

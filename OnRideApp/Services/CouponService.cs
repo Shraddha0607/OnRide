@@ -1,15 +1,15 @@
-﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Repositories;
+﻿using OnRideApp.Data;
+using OnRideApp.Models.DomainModel;
 
 namespace OnRideApp.Services
 {
     public class CouponService : ICouponService
     {
-        private readonly ICouponRepository couponRepository;
+        private readonly RideDbContext rideDbContext;
 
-        public CouponService(ICouponRepository couponRepository) 
+        public CouponService(RideDbContext rideDbContext) 
         {
-            this.couponRepository = couponRepository;
+            this.rideDbContext = rideDbContext;
         }
 
         public async Task<Coupon> AddCouponAsync(string coupon, int discount)
@@ -20,7 +20,9 @@ namespace OnRideApp.Services
                 percentageDiscount = discount
             };
 
-            return await couponRepository.AddAsync(newCoupon);
+            await rideDbContext.Coupons.AddAsync(newCoupon);
+            await rideDbContext.SaveChangesAsync();
+            return newCoupon; ;
         }
     }
 }

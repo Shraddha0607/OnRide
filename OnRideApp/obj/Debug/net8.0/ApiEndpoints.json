@@ -114,6 +114,42 @@
     ]
   },
   {
+    "ContainingType": "OnRideApp.Controllers.TrackingController",
+    "Method": "UpdateLocation",
+    "RelativePath": "api/Tracking/{cabId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cabId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "latitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "longitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "OnRideApp.Controllers.TripBookingController",
     "Method": "bookCab",
     "RelativePath": "api/TripBooking",
@@ -171,16 +207,22 @@
     ]
   },
   {
-    "ContainingType": "OnRideApp.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
+    "ContainingType": "OnRideApp.Controllers.TrackingController",
+    "Method": "trackCabAsync",
+    "RelativePath": "tripId/{tripId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "tripId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[OnRideApp.WeatherForecast, OnRideApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "OnRideApp.Models.DomainModel.Location",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -188,7 +230,6 @@
         ],
         "StatusCode": 200
       }
-    ],
-    "EndpointName": "GetWeatherForecast"
+    ]
   }
 ]

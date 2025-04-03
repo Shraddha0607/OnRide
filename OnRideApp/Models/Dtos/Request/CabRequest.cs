@@ -1,14 +1,13 @@
-﻿using OnRideApp.Models.MyEnums;
+﻿using System.ComponentModel.DataAnnotations;
+using OnRideApp.Models.MyEnums;
 
 namespace OnRideApp.Models.Dtos.Request
 {
     public class CabRequest
     {
+        [MaxLength(5, ErrorMessage = "Invalid cab number!")]
         public string CabNumber { get; set; }
-        public string CarModel { get; set; }
         public bool IsAvailable { get; set; }
-        public int NumberOfSeats { get; set; }
-        public CarTypeEnum CarType { get; set; }
-        public double FarePrKm { get; set; }
+        public int CabSpecificationId { get; set; }
     }
 }
