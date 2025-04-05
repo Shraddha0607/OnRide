@@ -12,7 +12,7 @@ public class CouponController : ControllerBase
     private readonly ILogger logger;
 
     public CouponController(ICouponService couponService,
-        ILogger logger)
+        ILogger<CouponController> logger)
     {
         this.couponService = couponService;
         this.logger = logger;

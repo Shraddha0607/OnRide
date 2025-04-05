@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OnRideApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0e0ca46feb3617850a82851a8ede1bdccc66c32b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2439ca59f54839251f88e44bfac449730642fabc")]
 [assembly: System.Reflection.AssemblyProductAttribute("OnRideApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OnRideApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

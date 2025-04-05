@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnRideApp.Models.DomainModel;
+using OnRideApp.Models.Dtos.Request;
 using OnRideApp.Services;
 
 namespace OnRideApp.Controllers;
@@ -9,24 +10,21 @@ namespace OnRideApp.Controllers;
 public class TrackingController : ControllerBase
 {
     private readonly ITrackingService trackingService;
-    private readonly ILogger logger;
+    private readonly ILogger<TrackingController> logger;
 
     public TrackingController(ITrackingService trackingService,
-        ILogger logger)
+        ILogger<TrackingController> logger)
     {
         this.trackingService = trackingService;
         this.logger = logger;
     }
 
-    [HttpPost("{cabId}")]
-    public async Task<IActionResult> UpdateLocation(
-        [FromRoute] int cabId,
-        [FromQuery] double latitude,
-        [FromQuery] double longitude)
+    [HttpPost]
+    public async Task<IActionResult> UpdateLocation(LocationRequest locationRequest)
     {
         try
         {
-            var location = await trackingService.AddLocationAsync(cabId, latitude, longitude);
+            var location = await trackingService.AddLocationAsync(locationRequest.CabId, locationRequest.Latitude, locationRequest.Longitude);
             return Ok("Location updated.");
         }
         catch(Exception ex)

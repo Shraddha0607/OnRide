@@ -47,6 +47,21 @@ public class RideDbContext : DbContext
             new CabSpecification { Id = 15, CabType = CabType.COMPACT_SUV, FarePrKm = 11.5, Model = "Mahindra XUV300", NumberOfSeats = 5 }
         );
 
+        modelBuilder.Entity<Customer>()
+           .HasIndex(b => b.EmailId)
+           .IsUnique();
+
+        modelBuilder.Entity<Cab>()
+            .HasIndex(b => b.Number)
+            .IsUnique();
+
+        modelBuilder.Entity<Driver>()
+            .HasIndex(b => new { b.PanNumber, b.MobNumber })
+            .IsUnique();
+
+        modelBuilder.Entity<Coupon>()
+            .HasIndex(b => b.CouponCode)
+            .IsUnique();
     }
 
 

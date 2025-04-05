@@ -18,21 +18,11 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.CustomerController",
-    "Method": "createCustomer",
+    "Method": "CreateCustomer",
     "RelativePath": "api/Customer",
     "HttpMethod": "POST",
     "IsController": true,
@@ -44,21 +34,11 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.DriverController",
-    "Method": "addDriver",
+    "Method": "AddDriver",
     "RelativePath": "api/Driver",
     "HttpMethod": "POST",
     "IsController": true,
@@ -70,17 +50,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.ReviewController",
@@ -101,53 +71,23 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.TrackingController",
     "Method": "UpdateLocation",
-    "RelativePath": "api/Tracking/{cabId}",
+    "RelativePath": "api/Tracking",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "cabId",
-        "Type": "System.Int32",
+        "Name": "locationRequest",
+        "Type": "OnRideApp.Models.Dtos.Request.LocationRequest",
         "IsRequired": true
-      },
-      {
-        "Name": "latitude",
-        "Type": "System.Double",
-        "IsRequired": false
-      },
-      {
-        "Name": "longitude",
-        "Type": "System.Double",
-        "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.TripBookingController",
@@ -163,17 +103,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.CustomerController",
@@ -194,17 +124,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[OnRideApp.Models.DomainModel.Customer, OnRideApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "OnRideApp.Controllers.TrackingController",
@@ -220,16 +140,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "OnRideApp.Models.DomainModel.Location",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   }
 ]
