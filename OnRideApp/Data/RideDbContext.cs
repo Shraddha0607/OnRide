@@ -6,17 +6,13 @@ public class RideDbContext : DbContext
     {
     }
 
-    //public DbSet<BookingReview> BookingReviews { get; set; }
     public DbSet<Cab> Cabs { get; set; }
     public DbSet<CabDriver> CabDrivers { get; set; }
     public DbSet<CabInSpecification> CabInSpecification { get; set; }
-    // public DbSet<CabLocation> CabLocations { get; set; }
     public DbSet<CabSpecification> CabSpecifications { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
     public DbSet<Customer> Customers { get; set; }
-    //public DbSet<CustomerBooking> CustomerBookings { get; set; }
     public DbSet<Driver> Drivers { get; set; }
-    //public DbSet<DriverBooking> DriverBookings { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<TripBooking> TripBookings { get; set; }
@@ -27,7 +23,7 @@ public class RideDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Location>().HasData(
-            new Location {Id = 1, Latitude = 0,  Longitude= 0}
+            new Location { Id = 1, Latitude = 0, Longitude = 0 }
         );
 
         // Seed data for CabSpecifications

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnRideApp.Models.DomainModel;
@@ -13,9 +12,9 @@ public class Cab
     public string Number { get; set; }
 
     public Boolean IsAvailable { get; set; }
-    
+
     [DefaultValue(1)]
-    public int? CabLocationId {get; set;}
+    public int? CabLocationId { get; set; }
 
     [ForeignKey(nameof(CabLocationId))]
     public Location? Location { get; set; }

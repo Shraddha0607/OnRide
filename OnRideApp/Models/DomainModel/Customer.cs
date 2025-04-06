@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace OnRideApp.Models.DomainModel;
+﻿namespace OnRideApp.Models.DomainModel;
 
 public class Customer
 {

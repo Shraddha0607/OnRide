@@ -48,6 +48,5 @@ public class ReviewService : IReviewService
             logger.LogError(ex.StackTrace);
             return null;
         }
-
     }
 }
