@@ -30,18 +30,12 @@ public class ReviewService : IReviewService
             Review review = new Review
             {
                 Rating = reviewRequest.rating,
-                Comment = reviewRequest.comment
-            };
-
-            BookingReview bookingReview = new BookingReview
-            {
-                TripBookingId = tripId,
-                Review = review
+                Comment = reviewRequest.comment,
+                TripBookingId = tripId
             };
 
             await transaction.CreateSavepointAsync(transactionSavepoint);
             await rideDbContext.Reviews.AddAsync(review);
-            await rideDbContext.BookingReviews.AddAsync(bookingReview);
             await rideDbContext.SaveChangesAsync();
             await transaction.CommitAsync();
 

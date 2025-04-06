@@ -5,7 +5,7 @@
 namespace OnRideApp.Migrations
 {
     /// <inheritdoc />
-    public partial class Addedattributeincab : Migration
+    public partial class FKaddedinCab : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,16 +16,6 @@ namespace OnRideApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "CabLocations");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Cabs_CabLocationId",
-                table: "Cabs");
-
-            migrationBuilder.AddColumn<int>(
-                name: "LocationId",
-                table: "Cabs",
-                type: "int",
-                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "CabId",
@@ -38,11 +28,6 @@ namespace OnRideApp.Migrations
                 table: "Locations",
                 columns: new[] { "Id", "Latitude", "Longitude" },
                 values: new object[] { 1, 0.0, 0.0 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cabs_LocationId",
-                table: "Cabs",
-                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_CabId",
@@ -58,9 +43,9 @@ namespace OnRideApp.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Cabs_Locations_LocationId",
+                name: "FK_Cabs_Locations_CabLocationId",
                 table: "Cabs",
-                column: "LocationId",
+                column: "CabLocationId",
                 principalTable: "Locations",
                 principalColumn: "Id");
         }
@@ -73,11 +58,7 @@ namespace OnRideApp.Migrations
                 table: "Bookings");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Cabs_Locations_LocationId",
-                table: "Cabs");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Cabs_LocationId",
+                name: "FK_Cabs_Locations_CabLocationId",
                 table: "Cabs");
 
             migrationBuilder.DropIndex(
@@ -88,10 +69,6 @@ namespace OnRideApp.Migrations
                 table: "Locations",
                 keyColumn: "Id",
                 keyValue: 1);
-
-            migrationBuilder.DropColumn(
-                name: "LocationId",
-                table: "Cabs");
 
             migrationBuilder.DropColumn(
                 name: "CabId",
@@ -115,11 +92,6 @@ namespace OnRideApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cabs_CabLocationId",
-                table: "Cabs",
-                column: "CabLocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CabLocations_LocationId",

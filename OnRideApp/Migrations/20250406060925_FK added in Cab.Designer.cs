@@ -12,8 +12,8 @@ using OnRideApp.Data;
 namespace OnRideApp.Migrations
 {
     [DbContext(typeof(RideDbContext))]
-    [Migration("20250405170914_Added attribute in cab")]
-    partial class Addedattributeincab
+    [Migration("20250406060925_FK added in Cab")]
+    partial class FKaddedinCab
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,9 +87,6 @@ namespace OnRideApp.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -97,7 +94,7 @@ namespace OnRideApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("CabLocationId");
 
                     b.HasIndex("Number")
                         .IsUnique();
@@ -537,7 +534,7 @@ namespace OnRideApp.Migrations
                 {
                     b.HasOne("OnRideApp.Models.DomainModel.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("CabLocationId");
 
                     b.Navigation("Location");
                 });

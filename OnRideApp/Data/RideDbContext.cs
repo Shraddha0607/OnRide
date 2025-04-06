@@ -6,7 +6,7 @@ public class RideDbContext : DbContext
     {
     }
 
-    public DbSet<BookingReview> BookingReviews { get; set; }
+    //public DbSet<BookingReview> BookingReviews { get; set; }
     public DbSet<Cab> Cabs { get; set; }
     public DbSet<CabDriver> CabDrivers { get; set; }
     public DbSet<CabInSpecification> CabInSpecification { get; set; }
