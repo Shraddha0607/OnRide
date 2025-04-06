@@ -1,7 +1,4 @@
 using OnRideApp.Data;
-using Microsoft.EntityFrameworkCore;
-using OnRideApp.Services;
-using OnRideApp.Transformer;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();

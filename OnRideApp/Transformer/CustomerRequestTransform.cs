@@ -1,8 +1,4 @@
-﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Models.Dtos.Response;
-
-namespace OnRideApp.Transformer;
+﻿namespace OnRideApp.Transformer;
 
 public class CustomerRequestTransformer
 {

@@ -1,7 +1,4 @@
-﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos.Request;
-
-namespace OnRideApp.Services;
+﻿namespace OnRideApp.Services;
 
 public interface IDriverService
 {

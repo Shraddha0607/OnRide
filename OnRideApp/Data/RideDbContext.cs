@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.MyEnums;
-
-namespace OnRideApp.Data;
+﻿namespace OnRideApp.Data;
 
 public class RideDbContext : DbContext
 {
@@ -14,20 +10,26 @@ public class RideDbContext : DbContext
     public DbSet<Cab> Cabs { get; set; }
     public DbSet<CabDriver> CabDrivers { get; set; }
     public DbSet<CabInSpecification> CabInSpecification { get; set; }
-    public DbSet<CabLocation> CabLocations { get; set; }
+    // public DbSet<CabLocation> CabLocations { get; set; }
     public DbSet<CabSpecification> CabSpecifications { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
     public DbSet<Customer> Customers { get; set; }
-    public DbSet<CustomerBooking> CustomerBookings { get; set; }
+    //public DbSet<CustomerBooking> CustomerBookings { get; set; }
     public DbSet<Driver> Drivers { get; set; }
-    public DbSet<DriverBooking> DriverBookings { get; set; }
+    //public DbSet<DriverBooking> DriverBookings { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<TripBooking> TripBookings { get; set; }
+    public DbSet<Bookings> Bookings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location {Id = 1, Latitude = 0,  Longitude= 0}
+        );
+
         // Seed data for CabSpecifications
         modelBuilder.Entity<CabSpecification>().HasData(
             new CabSpecification { Id = 1, CabType = CabType.MINI, FarePrKm = 7.5, Model = "Hyundai i10", NumberOfSeats = 4 },
@@ -63,6 +65,4 @@ public class RideDbContext : DbContext
             .HasIndex(b => b.CouponCode)
             .IsUnique();
     }
-
-
 }

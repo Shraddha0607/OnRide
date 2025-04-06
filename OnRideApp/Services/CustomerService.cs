@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OnRideApp.Data;
-using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Models.MyEnums;
-using OnRideApp.Transformer;
-
-namespace OnRideApp.Services;
+﻿namespace OnRideApp.Services;
 
 public class CustomerService : ICustomerService
 {
@@ -27,11 +20,13 @@ public class CustomerService : ICustomerService
     public async Task<IEnumerable<Customer>> GetCustomerByGenderAndAgeGreaterThanAsync(Gender gender, int age)
     {
         var allCustomers = await rideDbContext.Customers
-                                    .Where(x => x.Gender == gender && x.Age == age)
-                                    .ToListAsync();
+            .AsNoTracking()
+            .Where(x => x.Gender == gender && x.Age > age)
+            .ToListAsync();
+
         if (allCustomers == null)
         {
-            throw new Exception("No such customer found");
+            throw new CustomException("No such customer found");
         }
         return allCustomers;
     }

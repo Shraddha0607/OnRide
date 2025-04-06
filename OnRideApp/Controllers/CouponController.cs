@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnRideApp.Models.DomainModel;
-using OnRideApp.Services;
-
-namespace OnRideApp.Controllers;
+﻿namespace OnRideApp.Controllers;
 
 [Route("/api/[controller]")]
 [ApiController]
@@ -32,8 +28,12 @@ public class CouponController : ControllerBase
         {
             logger.LogError("{} Error :  {}", DateTime.Now, ex.Message);
             logger.LogError(ex.StackTrace);
+
+            if (ex is CustomException)
+            {
+                return BadRequest(ex.Message);
+            }
             return BadRequest("Error occured while adding coupon.");
         }
     }
 }
-

@@ -1,6 +1,4 @@
-﻿using OnRideApp.Models.MyEnums;
-
-namespace OnRideApp.Models.Dtos.Response;
+﻿namespace OnRideApp.Models.Dtos.Response;
 
 public class TripBookingResponse
 {

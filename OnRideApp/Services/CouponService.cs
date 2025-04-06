@@ -1,7 +1,4 @@
-﻿using OnRideApp.Data;
-using OnRideApp.Models.DomainModel;
-
-namespace OnRideApp.Services;
+﻿namespace OnRideApp.Services;
 
 public class CouponService : ICouponService
 {
@@ -14,7 +11,13 @@ public class CouponService : ICouponService
 
     public async Task<Coupon> AddCouponAsync(string coupon, int discount)
     {
-        Coupon newCoupon = new Coupon
+        var couponExist = await rideDbContext.Coupons.AsNoTracking().AnyAsync(x => x.CouponCode == coupon);
+        if (couponExist)
+        {
+            throw new CustomException("Coupon code must be unique!");
+        }
+
+        Coupon newCoupon = new()
         {
             CouponCode = coupon,
             percentageDiscount = discount
@@ -22,6 +25,6 @@ public class CouponService : ICouponService
 
         await rideDbContext.Coupons.AddAsync(newCoupon);
         await rideDbContext.SaveChangesAsync();
-        return newCoupon; ;
+        return newCoupon;
     }
 }

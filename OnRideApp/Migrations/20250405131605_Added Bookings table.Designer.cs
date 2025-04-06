@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnRideApp.Data;
 
@@ -11,9 +12,11 @@ using OnRideApp.Data;
 namespace OnRideApp.Migrations
 {
     [DbContext(typeof(RideDbContext))]
-    partial class RideDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250405131605_Added Bookings table")]
+    partial class AddedBookingstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +53,6 @@ namespace OnRideApp.Migrations
                     b.Property<int>("TripBookingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CabId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
@@ -60,8 +60,6 @@ namespace OnRideApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TripBookingId");
-
-                    b.HasIndex("CabId");
 
                     b.HasIndex("CustomerId");
 
@@ -84,9 +82,6 @@ namespace OnRideApp.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LocationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -94,7 +89,7 @@ namespace OnRideApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("CabLocationId");
 
                     b.HasIndex("Number")
                         .IsUnique();
@@ -146,6 +141,24 @@ namespace OnRideApp.Migrations
                     b.HasIndex("CabSpecificationId");
 
                     b.ToTable("CabInSpecification");
+                });
+
+            modelBuilder.Entity("OnRideApp.Models.DomainModel.CabLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("CabLocations");
                 });
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.CabSpecification", b =>
@@ -410,14 +423,6 @@ namespace OnRideApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Latitude = 0.0,
-                            Longitude = 0.0
-                        });
                 });
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.Review", b =>
@@ -497,12 +502,6 @@ namespace OnRideApp.Migrations
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.Bookings", b =>
                 {
-                    b.HasOne("OnRideApp.Models.DomainModel.Cab", "Cab")
-                        .WithMany()
-                        .HasForeignKey("CabId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("OnRideApp.Models.DomainModel.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
@@ -521,8 +520,6 @@ namespace OnRideApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cab");
-
                     b.Navigation("Customer");
 
                     b.Navigation("Driver");
@@ -532,11 +529,9 @@ namespace OnRideApp.Migrations
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.Cab", b =>
                 {
-                    b.HasOne("OnRideApp.Models.DomainModel.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
-                    b.Navigation("Location");
+                    b.HasOne("OnRideApp.Models.DomainModel.CabLocation", null)
+                        .WithMany("Cabs")
+                        .HasForeignKey("CabLocationId");
                 });
 
             modelBuilder.Entity("OnRideApp.Models.DomainModel.CabDriver", b =>
@@ -575,6 +570,22 @@ namespace OnRideApp.Migrations
                     b.Navigation("Cab");
 
                     b.Navigation("CabSpecification");
+                });
+
+            modelBuilder.Entity("OnRideApp.Models.DomainModel.CabLocation", b =>
+                {
+                    b.HasOne("OnRideApp.Models.DomainModel.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("OnRideApp.Models.DomainModel.CabLocation", b =>
+                {
+                    b.Navigation("Cabs");
                 });
 #pragma warning restore 612, 618
         }

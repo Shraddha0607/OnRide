@@ -1,26 +1,30 @@
-﻿using OnRideApp.Data;
-using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos.Request;
-
-namespace OnRideApp.Services;
+﻿namespace OnRideApp.Services;
 
 public class ReviewService : IReviewService
 {
     private readonly RideDbContext rideDbContext;
-    public ReviewService(RideDbContext rideDbContext)
+    private readonly ILogger logger;
+
+    public ReviewService(RideDbContext rideDbContext,
+            ILogger<ReviewService> logger)
     {
         this.rideDbContext = rideDbContext;
+        this.logger = logger;
     }
 
     public async Task<string> SubmitReview(int tripId, ReviewRequest reviewRequest)
     {
         var transaction = await rideDbContext.Database.BeginTransactionAsync();
+        var transactionSavepoint = "SubmitReview";
         try
         {
-            var tripBooking = await rideDbContext.TripBookings.FindAsync(tripId);
-            if (tripBooking == null)
+            var isValidTripId = await rideDbContext.TripBookings
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == tripId);
+
+            if (!isValidTripId)
             {
-                throw new Exception("Invalid Trip Id!");
+                throw new CustomException("Invalid Trip Id!");
             }
 
             Review review = new Review
@@ -31,24 +35,25 @@ public class ReviewService : IReviewService
 
             BookingReview bookingReview = new BookingReview
             {
-                TripBooking = tripBooking,
+                TripBookingId = tripId,
                 Review = review
             };
 
-            await transaction.CreateSavepointAsync("transactionSavepoint");
+            await transaction.CreateSavepointAsync(transactionSavepoint);
             await rideDbContext.Reviews.AddAsync(review);
             await rideDbContext.BookingReviews.AddAsync(bookingReview);
             await rideDbContext.SaveChangesAsync();
-
             await transaction.CommitAsync();
-        }
-        catch (Exception e)
-        {
-            await transaction.RollbackToSavepointAsync("transactionSavepoint");
-            Console.WriteLine(e);
-        }
 
-        return "Thank you for feedback";
+            return "Thank you for feedback";
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackToSavepointAsync(transactionSavepoint);
+            logger.LogError("{} Error  :  {}", DateTime.Now, ex.Message);
+            logger.LogError(ex.StackTrace);
+            return null;
+        }
 
     }
 }

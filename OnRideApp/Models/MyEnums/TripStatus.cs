@@ -1,9 +1,8 @@
-﻿namespace OnRideApp.Models.MyEnums
+﻿namespace OnRideApp.Models.MyEnums;
+
+public enum TripStatus
 {
-    public enum TripStatus
-    {
-        IN_TRANSIT,
-        COMPLETED,
-        CANCELLED
-    }
+    IN_TRANSIT,
+    COMPLETED,
+    CANCELLED
 }

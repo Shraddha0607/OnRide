@@ -1,7 +1,4 @@
-﻿using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos.Request;
-
-namespace OnRideApp.Transformer;
+﻿namespace OnRideApp.Transformer;
 
 public class DriverRequestTransform
 {

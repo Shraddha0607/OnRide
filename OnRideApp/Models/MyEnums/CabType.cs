@@ -6,5 +6,4 @@ public enum CabType
     SEDAN,
     SUV,
     COMPACT_SUV,
-    
 }

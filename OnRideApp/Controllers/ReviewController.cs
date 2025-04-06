@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Services;
-
-namespace OnRideApp.Controllers
+﻿namespace OnRideApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -10,29 +6,29 @@ namespace OnRideApp.Controllers
     {
         private readonly IReviewService reviewService;
         private readonly ILogger logger;
+
         public ReviewController(IReviewService reviewService,
-            ILogger logger)
+            ILogger<ReviewController> logger)
         {
             this.reviewService = reviewService;
             this.logger = logger;
         }
 
         [HttpPost("tripId/{tripId}")]
-        public async Task<IActionResult> AddReview([FromRoute] int tripId,[FromBody] ReviewRequest reviewRequest)
+        public async Task<IActionResult> AddReview([FromRoute] int tripId, [FromBody] ReviewRequest reviewRequest)
         {
             try
             {
-                var review =  await reviewService.SubmitReview(tripId, reviewRequest);
+                var review = await reviewService.SubmitReview(tripId, reviewRequest);
                 return Ok(review);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
                 logger.LogError(ex.Message);
 
                 return BadRequest("Error occured while adding review!");
             }
-            
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿global using OnRideApp.Common;
+global using Microsoft.AspNetCore.Mvc;
+global using OnRideApp.Exceptions;
+global using OnRideApp.Services;
+global using OnRideApp.Models.DomainModel;
+global using OnRideApp.Models.Dtos.Request;
+global using OnRideApp.Models.Dtos.Response;
+global using OnRideApp.Models.MyEnums;
+global using Microsoft.EntityFrameworkCore;
+global using OnRideApp.Transformer;
+global using System.ComponentModel.DataAnnotations;
+global using OnRideApp.Data;

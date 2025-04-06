@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Services;
-
-namespace OnRideApp.Controllers;
+﻿namespace OnRideApp.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,7 +8,7 @@ public class TripBookingController : ControllerBase
     private readonly ILogger logger;
 
     public TripBookingController(ITripBookingService tripBookingService,
-        ILogger logger)
+        ILogger<TripBookingController> logger)
     {
         this.tripBookingService = tripBookingService;
         this.logger = logger;
@@ -33,7 +29,6 @@ public class TripBookingController : ControllerBase
                 logger.LogError(ex.StackTrace);
                 return BadRequest("Error occured while booking cab!");
             }
-
         }
     }
 }

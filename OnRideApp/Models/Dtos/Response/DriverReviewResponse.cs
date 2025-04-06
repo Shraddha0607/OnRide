@@ -1,6 +1,4 @@
-﻿using OnRideApp.Models.DomainModel;
-
-namespace OnRideApp.Models.Dtos.Response;
+﻿namespace OnRideApp.Models.Dtos.Response;
 
 public class DriverReviewResponse
 {

@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Services;
-
-namespace OnRideApp.Controllers;
+﻿namespace OnRideApp.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,7 +8,7 @@ public class DriverController : ControllerBase
     private readonly ILogger logger;
 
     public DriverController(IDriverService driverService,
-        ILogger logger)
+        ILogger<DriverController> logger)
     {
         this.driverService = driverService;
         this.logger = logger;
@@ -30,10 +26,11 @@ public class DriverController : ControllerBase
         {
             logger.LogError("{} Error :  {}", DateTime.Now, ex.Message);
             logger.LogError(ex.StackTrace);
+            if (ex is CustomException)
+            {
+                return BadRequest(ex.Message);
+            }
             return BadRequest("Error occured while adding driver");
         }
-        
     }
-        
 }
-

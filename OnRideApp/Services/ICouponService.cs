@@ -1,6 +1,4 @@
-﻿using OnRideApp.Models.DomainModel;
-
-namespace OnRideApp.Services;
+﻿namespace OnRideApp.Services;
 
 public interface ICouponService
 {

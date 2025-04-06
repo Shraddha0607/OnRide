@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnRideApp.Models.DomainModel;
-using OnRideApp.Models.Dtos.Request;
-using OnRideApp.Models.MyEnums;
-using OnRideApp.Services;
-
-namespace OnRideApp.Controllers;
+﻿namespace OnRideApp.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,6 +6,7 @@ public class CustomerController : ControllerBase
 {
     private readonly ICustomerService customerService;
     private readonly ILogger logger;
+
     public CustomerController(ICustomerService customerService,
         ILogger<CustomerController> logger)
     {
@@ -31,6 +26,11 @@ public class CustomerController : ControllerBase
         {
             logger.LogError("{} Error :  {}", DateTime.Now, ex.Message);
             logger.LogError(ex.StackTrace);
+
+            if (ex is CustomException)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return BadRequest("Error occured while creating customer");
         }
@@ -57,7 +57,5 @@ public class CustomerController : ControllerBase
 
             return BadRequest("Error occured while fetching customer");
         }
-
     }
-
 }
