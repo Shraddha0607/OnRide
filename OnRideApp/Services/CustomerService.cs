@@ -11,6 +11,14 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer> AddCustomerAsync(CustomerRequest customerRequest)
     {
+        var IsValidEmail = await rideDbContext.Customers
+        .AsNoTracking()
+        .AnyAsync(x => x.EmailId == customerRequest.EmailId);
+
+        if (IsValidEmail)
+        {
+            throw new CustomException("Email is already present!");
+        }
         Customer customer = CustomerRequestTransformer.CustomerRequestToCustomer(customerRequest);
         await rideDbContext.Customers.AddAsync(customer);
         await rideDbContext.SaveChangesAsync();

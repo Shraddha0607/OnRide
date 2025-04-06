@@ -24,11 +24,13 @@ public class TripBookingController : ControllerBase
         }
         catch (Exception ex)
         {
+            logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
+            logger.LogError(ex.StackTrace);
+            if (ex is CustomException)
             {
-                logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
-                logger.LogError(ex.StackTrace);
-                return BadRequest("Error occured while booking cab!");
+                return BadRequest(ex.Message);
             }
+            return BadRequest("Error occured while booking cab!");
         }
     }
 }

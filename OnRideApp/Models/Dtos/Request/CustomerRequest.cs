@@ -3,6 +3,7 @@
 public class CustomerRequest
 {
     [Required]
+    [RegularExpression(RegexPatterns.AlphaOnly, ErrorMessage = "Only alphabets are allowed!")]
     [StringLength(50, ErrorMessage = "Name length should be less than 50")]
     public string Name { get; set; }
 
@@ -12,6 +13,7 @@ public class CustomerRequest
     [EmailAddress]
     public string EmailId { get; set; }
 
+    [RegularExpression(RegexPatterns.AlphanumericWithSpace, ErrorMessage = "Only alphanumeric with space allowed!")]
     [StringLength(100, ErrorMessage = "Address length should be 100")]
     public string Address { get; set; }
 

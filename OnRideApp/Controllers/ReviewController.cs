@@ -26,7 +26,10 @@
             {
                 logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
                 logger.LogError(ex.Message);
-
+                if (ex is CustomException)
+                {
+                    return BadRequest(ex.Message);
+                }
                 return BadRequest("Error occured while adding review!");
             }
         }

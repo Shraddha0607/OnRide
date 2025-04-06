@@ -8,7 +8,7 @@ public class DriverRequestTransform
         {
             Name = driverRequest.Name,
             Age = driverRequest.Age,
-            PanNumber = driverRequest.PanNumber,
+            PanNumber = driverRequest.PanNumber.ToUpper(),
             MobNumber = driverRequest.MobNumber,
         };
     }
@@ -18,7 +18,8 @@ public class DriverRequestTransform
         return new Cab
         {
             IsAvailable = cabRequest.IsAvailable,
-            Number = cabRequest.CabNumber
+            Number = cabRequest.CabNumber,
+            CabSpecificationId = cabRequest.CabSpecificationId
         };
     }
 }

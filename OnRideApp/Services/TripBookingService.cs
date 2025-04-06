@@ -26,59 +26,37 @@ public class TripBookingService : ITripBookingService
             throw new Exception("Customer Id is not valid!");
         }
 
+        var availableCab = await rideDbContext.CabDrivers
+            .AsNoTracking()
+            .Include(x => x.Cab)
+            .Include(x => x.Driver)
+            .Select(x => new
+            {
+                CabId = x.Cab.Id,
+                IsAvailable = x.Cab.IsAvailable,
+                CabSpecificationId = x.Cab.CabSpecificationId,
+                FarePrKm = x.Cab.CabSpecification.FarePrKm,
+                DriverId = x.Driver.Id
+            })
+            .FirstOrDefaultAsync(x => x.CabSpecificationId == tripBookingRequest.CabSpecificationId && x.IsAvailable);
+
+        if (availableCab == null)
+        {
+            throw new CustomException("No cab available!");
+        }
+
         try
         {
             TripBooking tripBooking = TripBookingTransformer.TripRequestToTripBooking(tripBookingRequest);
 
-            var availableCab = await rideDbContext.CabInSpecification
-                .AsNoTracking()
-                .Include(x => x.Cab)
-                .Include(x => x.CabSpecification)
-                .Select(x => new
-                {
-                    CabId = x.Cab.Id,
-                    IsAvailable = x.Cab.IsAvailable,
-                    CabSpecificationId = x.CabSpecification.Id,
-                    FarePrKm = x.CabSpecification.FarePrKm
-                })
-                .FirstOrDefaultAsync(x => x.CabSpecificationId == tripBookingRequest.CabSpecificationId && x.IsAvailable);
-
-            if (availableCab == null)
-            {
-                throw new CustomException("No cab available!");
-            }
-
             tripBooking.TotalFare = tripBookingRequest.TripDistanceInKm * availableCab.FarePrKm;
+            tripBooking.CabId = availableCab.CabId;
+            tripBooking.DriverId = availableCab.DriverId;
+            tripBooking.CustomerId = tripBookingRequest.CustomerId;
 
             await transaction.CreateSavepointAsync(transactionSavePoint);
             await rideDbContext.TripBookings.AddAsync(tripBooking);
-            await rideDbContext.SaveChangesAsync();
 
-            var driverId = await rideDbContext.CabDrivers
-                .AsNoTracking()
-                .Include(x => x.Driver)
-                .Include(x => x.Cab)
-                .Select(x => new
-                {
-                    DriverId = x.Driver.Id,
-                    CabId = x.Cab.Id
-                })
-                .FirstOrDefaultAsync(x => x.CabId == availableCab.CabId);
-
-            if (driverId == null)
-            {
-                throw new CustomException("Driver not found!");
-            }
-
-            Bookings bookings = new Bookings
-            {
-                TripBookingId = tripBooking.Id,
-                CustomerId = tripBookingRequest.CustomerId,
-                DriverId = driverId.DriverId,
-                CabId = availableCab.CabId
-            };
-
-            await rideDbContext.Bookings.AddAsync(bookings);
             await rideDbContext.Cabs
                 .Where(x => x.Id == availableCab.CabId)
                 .ExecuteUpdateAsync(x => x.SetProperty(x => x.IsAvailable, false));

@@ -14,19 +14,19 @@ public class ReviewService : IReviewService
 
     public async Task<string> SubmitReview(int tripId, ReviewRequest reviewRequest)
     {
+        var isValidTripId = await rideDbContext.TripBookings
+                .AsNoTracking()
+                .AnyAsync(x => x.Id == tripId);
+
+        if (!isValidTripId)
+        {
+            throw new CustomException("Invalid Trip Id!");
+        }
+
         var transaction = await rideDbContext.Database.BeginTransactionAsync();
         var transactionSavepoint = "SubmitReview";
         try
         {
-            var isValidTripId = await rideDbContext.TripBookings
-                .AsNoTracking()
-                .AnyAsync(x => x.Id == tripId);
-
-            if (!isValidTripId)
-            {
-                throw new CustomException("Invalid Trip Id!");
-            }
-
             Review review = new Review
             {
                 Rating = reviewRequest.rating,

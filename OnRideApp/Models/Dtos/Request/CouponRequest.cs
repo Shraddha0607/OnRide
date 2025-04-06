@@ -3,7 +3,7 @@
 public class CouponRequest
 {
     [Required]
-    [RegularExpression(RegexPatterns.CouponCode, ErrorMessage ="Please give alphnumeric characters only!")]
+    [RegularExpression(RegexPatterns.Alphanumeric, ErrorMessage = "Please give alphnumeric characters only!")]
     [StringLength(10, ErrorMessage = "Coupon code must be upto 10 characters!")]
     public string CouponCode { get; set; }
 

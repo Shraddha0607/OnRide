@@ -34,34 +34,29 @@ public class DriverService : IDriverService
             {
                 throw new CustomException("Mobile number already exist!");
             }
-            if (existingRecord.PanNumber == driverRequest.PanNumber)
+            if (String.Equals(existingRecord.PanNumber, driverRequest.PanNumber, StringComparison.OrdinalIgnoreCase))
             {
                 throw new CustomException("Pan number already exist!");
             }
             throw new CustomException("Cab number already exist!");
         }
 
+        var cabSpecification = await rideDbContext.CabSpecifications
+            .AsNoTracking()
+            .AnyAsync(x => x.Id == driverRequest.Cab.CabSpecificationId);
+
+        if (!cabSpecification)
+        {
+            throw new CustomException("Cab Specification not found");
+        }
+
         var transaction = await rideDbContext.Database.BeginTransactionAsync();
         var transactionSavepoint = "AddDriverData";
+
         try
         {
-            CabSpecification? cabSpecification = await rideDbContext.CabSpecifications
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == driverRequest.Cab.CabSpecificationId);
-
-            if (cabSpecification == null)
-            {
-                throw new CustomException("Cab Specification not found");
-            }
-
             Cab cab = DriverRequestTransform.CabRequestToCab(driverRequest.Cab);
             Driver driver = DriverRequestTransform.DriverRequestToDriver(driverRequest);
-
-            CabInSpecification cabInSpecification = new CabInSpecification()
-            {
-                Cab = cab,
-                CabSpecification = cabSpecification
-            };
 
             CabDriver cabDriver = new CabDriver()
             {
@@ -73,10 +68,8 @@ public class DriverService : IDriverService
             await rideDbContext.Cabs.AddAsync(cab);
             await rideDbContext.Drivers.AddAsync(driver);
             await rideDbContext.CabDrivers.AddAsync(cabDriver);
-            await rideDbContext.CabInSpecification.AddAsync(cabInSpecification);
             await rideDbContext.SaveChangesAsync();
 
-            // if succedde then commt
             await transaction.CommitAsync();
             return driver;
         }

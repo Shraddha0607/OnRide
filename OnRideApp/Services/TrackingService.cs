@@ -55,9 +55,9 @@ public class TrackingService : ITrackingService
 
     public async Task<Location> trackCabAsync(int tripId)
     {
-        var trip = await rideDbContext.Bookings
+        var trip = await rideDbContext.TripBookings
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.TripBookingId == tripId);
+            .FirstOrDefaultAsync(x => x.Id == tripId);
 
         if (trip == null)
         {

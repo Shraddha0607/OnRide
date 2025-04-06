@@ -8,7 +8,6 @@ public class RideDbContext : DbContext
 
     public DbSet<Cab> Cabs { get; set; }
     public DbSet<CabDriver> CabDrivers { get; set; }
-    public DbSet<CabInSpecification> CabInSpecification { get; set; }
     public DbSet<CabSpecification> CabSpecifications { get; set; }
     public DbSet<Coupon> Coupons { get; set; }
     public DbSet<Customer> Customers { get; set; }
@@ -16,7 +15,6 @@ public class RideDbContext : DbContext
     public DbSet<Location> Locations { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<TripBooking> TripBookings { get; set; }
-    public DbSet<Bookings> Bookings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

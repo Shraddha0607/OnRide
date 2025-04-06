@@ -26,6 +26,10 @@ public class TrackingController : ControllerBase
         {
             logger.LogError("{} Error  : {}", DateTime.Now, ex.Message);
             logger.LogError(ex.StackTrace);
+            if (ex is CustomException)
+            {
+                return BadRequest(ex.Message);
+            }
             return BadRequest("Error occurred while adding location!");
         }
     }

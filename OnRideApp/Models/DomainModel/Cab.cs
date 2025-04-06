@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace OnRideApp.Models.DomainModel;
+﻿namespace OnRideApp.Models.DomainModel;
 
 public class Cab
 {
@@ -18,4 +15,7 @@ public class Cab
 
     [ForeignKey(nameof(CabLocationId))]
     public Location? Location { get; set; }
+
+    public int CabSpecificationId { get; set; }
+    public CabSpecification CabSpecification { get; set; }
 }

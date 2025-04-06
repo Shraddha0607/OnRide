@@ -1,9 +1,8 @@
-﻿namespace OnRideApp.Models.MyEnums
+﻿namespace OnRideApp.Models.MyEnums;
+
+public enum Gender
 {
-    public enum Gender
-    {
-        MALE,
-        FEMALE,
-        OTHER
-    }
+    MALE,
+    FEMALE,
+    OTHER
 }
