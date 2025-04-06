@@ -15,13 +15,11 @@ public class CouponController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCoupon(
-        [FromQuery] string coupon,
-        [FromQuery] int discount)
+    public async Task<IActionResult> CreateCoupon(CouponRequest couponRequest)
     {
         try
         {
-            var newCoupon = await couponService.AddCouponAsync(coupon, discount);
+            var newCoupon = await couponService.AddCouponAsync(couponRequest);
             return Ok("Coupon added successfully");
         }
         catch (Exception ex)

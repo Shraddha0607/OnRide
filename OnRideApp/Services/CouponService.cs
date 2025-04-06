@@ -9,9 +9,12 @@ public class CouponService : ICouponService
         this.rideDbContext = rideDbContext;
     }
 
-    public async Task<Coupon> AddCouponAsync(string coupon, int discount)
+    public async Task<Coupon> AddCouponAsync(CouponRequest couponRequest)
     {
-        var couponExist = await rideDbContext.Coupons.AsNoTracking().AnyAsync(x => x.CouponCode == coupon);
+        var couponExist = await rideDbContext.Coupons
+            .AsNoTracking()
+            .AnyAsync(x => x.CouponCode == couponRequest.CouponCode);
+
         if (couponExist)
         {
             throw new CustomException("Coupon code must be unique!");
@@ -19,8 +22,8 @@ public class CouponService : ICouponService
 
         Coupon newCoupon = new()
         {
-            CouponCode = coupon,
-            percentageDiscount = discount
+            CouponCode = couponRequest.CouponCode,
+            percentageDiscount = couponRequest.percentageDiscount
         };
 
         await rideDbContext.Coupons.AddAsync(newCoupon);
