@@ -1,6 +1,5 @@
 # OnRide
 
-# OnRide
 OnRide is a ride-booking application built with .NET Core Web API. It allows users to book rides, manage coupons, add drivers and cabs, and track trips. The app uses JWT authentication, exception handling, logging, and asynchronous programming for optimal performance.
 
 ## Features
