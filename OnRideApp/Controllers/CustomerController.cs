@@ -1,7 +1,10 @@
-﻿namespace OnRideApp.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace OnRideApp.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService customerService;

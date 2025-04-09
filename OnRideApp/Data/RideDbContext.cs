@@ -2,7 +2,7 @@
 
 public class RideDbContext : DbContext
 {
-    public RideDbContext(DbContextOptions options) : base(options)
+    public RideDbContext(DbContextOptions<RideDbContext> options) : base(options)
     {
     }
 
