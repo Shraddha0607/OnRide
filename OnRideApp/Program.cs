@@ -3,10 +3,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .MinimumLevel.Debug()
+    .CreateLogger();
+
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 builder.Services.AddDbContext<RideDbContext>(options =>
