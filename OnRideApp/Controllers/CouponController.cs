@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using OnRideApp.CustomActionFilters;
 
 namespace OnRideApp.Controllers;
 
@@ -18,6 +19,7 @@ public class CouponController : ControllerBase
     }
 
     [HttpPost]
+    [ValidateModel]
     public async Task<IActionResult> CreateCoupon(CouponRequest couponRequest)
     {
         try
@@ -37,4 +39,25 @@ public class CouponController : ControllerBase
             return BadRequest("Error occured while adding coupon.");
         }
     }
+
+    //[HttpGet]
+    //public async Task<ActionResult<Coupon>> GetAll()
+    //{
+    //    try
+    //    {
+    //        var coupons = await couponService.GetAllAsync();
+    //        return Ok(coupons);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        logger.LogError("{} Error :  {}", DateTime.Now, ex.Message);
+    //        logger.LogError(ex.StackTrace);
+
+    //        if (ex is CustomException)
+    //        {
+    //            return BadRequest(ex.Message);
+    //        }
+    //        return BadRequest(null);
+    //    }
+    //}
 }

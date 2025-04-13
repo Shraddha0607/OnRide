@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using OnRideApp.CustomActionFilters;
 
 namespace OnRideApp.Controllers;
 
@@ -18,6 +19,7 @@ public class DriverController : ControllerBase
     }
 
     [HttpPost]
+    [ValidateModel]
     public async Task<IActionResult> AddDriver(DriverRequest driverRequest)
     {
         try

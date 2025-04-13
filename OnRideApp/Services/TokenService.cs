@@ -30,10 +30,12 @@ public class TokenService : ITokenService
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var receivers = configuration.GetSection("Jwt:Receiver").Get<string[]>();
+        var selectedAudience = receivers.First();
 
         var token = new JwtSecurityToken(
             configuration["Jwt:Issuer"],
-            configuration["Jwt:Audience"],
+            audience: selectedAudience,
             claims,
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials

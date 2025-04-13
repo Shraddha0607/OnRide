@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using OnRideApp.Models.Dtos.AuthDto;
 
 namespace TaskDoner.Controllers;
@@ -17,6 +18,13 @@ public class AuthController : ControllerBase
         this.userManager = userManager;
         this.tokenService = tokenService;
     }
+
+    //[HttpGet]
+    //[Authorize]
+    //public IActionResult Get()
+    //{
+    //    return Ok(new { message = "Hello" });
+    //}
 
     // Post : /api/Auth/Register
     [HttpPost]
@@ -40,12 +48,12 @@ public class AuthController : ControllerBase
 
                 if (identityResult.Succeeded)
                 {
-                    return Ok("User was registered ! please login.");
+                    return Ok(new { message = "User was registered ! please login." } );
                 }
             }
         }
 
-        return BadRequest("Something went wrong");
+        return BadRequest(new { message = "Something went wrong" } );
     }
 
     [HttpPost]
@@ -77,6 +85,6 @@ public class AuthController : ControllerBase
             }
         }
 
-        return BadRequest("Username or password incorrect!");
+        return BadRequest(new { message = "Username or password incorrect!" });
     }
 }

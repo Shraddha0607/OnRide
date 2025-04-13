@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using OnRideApp.CustomActionFilters;
 
 namespace OnRideApp.Controllers
 {
@@ -18,6 +19,7 @@ namespace OnRideApp.Controllers
         }
 
         [HttpPost("tripId/{tripId}")]
+        [ValidateModel]
         public async Task<IActionResult> AddReview([FromRoute] int tripId, [FromBody] ReviewRequest reviewRequest)
         {
             try
